@@ -14,7 +14,7 @@ gobaidumap
 
 ::
 
-    go get -u github.com/menduo/gobaidumap
+    go get -u github.com/espush/gobaidumap
 
 注意
 ====
@@ -31,7 +31,7 @@ gobaidumap
 
     import (
         "fmt"
-        "github.com/menduo/gobaidumap"
+        "github.com/espush/gobaidumap"
     )
 
     func main() {
@@ -94,4 +94,4 @@ gobaidumap
 
 shimenduo at gmail dot com
 
-https://github.com/menduo/gobaidumap/issues
+https://github.com/espush/gobaidumap/issues

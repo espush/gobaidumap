@@ -25,12 +25,38 @@ const (
 	reqURLForIP string = "http://api.map.baidu.com/location/ip?ak="
 )
 
+// BaiduMapSDK 使用 struct 托管方法
+type BaiduMapSDK struct {
+	ak string
+}
+
+// NewBaiduMapSDK new object.
+func NewBaiduMapSDK(ak_ string) *BaiduMapSDK {
+	return &BaiduMapSDK{
+		ak: ak_,
+	}
+}
+
+// SetAK 设置 Baidu Map AK
+func (m *BaiduMapSDK) SetAK(ak string) {
+	m.ak = ak
+}
+
+// GetAK 获取 Baidu Map AK
+func (m *BaiduMapSDK) GetAK() string {
+	if m.ak == "" {
+		return AppKey
+	}
+
+	return m.ak
+}
+
 // GetAddressViaGEO 通过 GEO 坐标信息获取地址
-func GetAddressViaGEO(lat, lng string) (*StructGEOToAddress, error) {
+func (m *BaiduMapSDK) GetAddressViaGEO(lat, lng string) (*StructGEOToAddress, error) {
 	res := new(StructGEOToAddress)
 
 	parameter := fmt.Sprintf("&location=%s,%s&output=json&pois=0", lat, lng)
-	reqURL := fmt.Sprintf("%s%s%s", reqURLForGEO, AppKey, parameter)
+	reqURL := fmt.Sprintf("%s%s%s", reqURLForGEO, m.GetAK(), parameter)
 
 	res2, err := requestBaidu("GetAddressViaGEO", reqURL)
 	if err != nil {
@@ -47,11 +73,11 @@ func GetAddressViaGEO(lat, lng string) (*StructGEOToAddress, error) {
 }
 
 // GetGeoViaAddress 通过地址获得 GEO 坐标
-func GetGeoViaAddress(address string) (*StructAddressToGEO, error) {
+func (m *BaiduMapSDK) GetGeoViaAddress(address string) (*StructAddressToGEO, error) {
 	res := new(StructAddressToGEO)
 
 	parameter := fmt.Sprintf("&address=%s&output=json&pois=1", address)
-	reqURL := fmt.Sprintf("%s%s%s", reqURLForGEO, AppKey, parameter)
+	reqURL := fmt.Sprintf("%s%s%s", reqURLForGEO, m.GetAK(), parameter)
 
 	res2, err := requestBaidu("GetGeoViaAddress", reqURL)
 	if err != nil {
@@ -68,11 +94,11 @@ func GetGeoViaAddress(address string) (*StructAddressToGEO, error) {
 }
 
 // GetAddressViaIP 通过 IP 获取地址
-func GetAddressViaIP(address string) (*StructIPToAddress, error) {
+func (m *BaiduMapSDK) GetAddressViaIP(address string) (*StructIPToAddress, error) {
 	res := new(StructIPToAddress)
 
 	parameter := fmt.Sprintf("&ip=%s&output=json&pois=0", address)
-	reqURL := fmt.Sprintf("%s%s%s", reqURLForIP, AppKey, parameter)
+	reqURL := fmt.Sprintf("%s%s%s", reqURLForIP, m.GetAK(), parameter)
 
 	res2, err := requestBaidu("GetAddressViaIP", reqURL)
 	if err != nil {
